@@ -172,7 +172,7 @@ FROM spravki
 JOIN spravka_types ON spravki.spravka_type_id = spravka_types.id
 WHERE spravka_types.name = 'Санитарная книжка';
 
--- 10. Удаляем одну справку
+-- 10. Удаляем одну справку (id 8 — санитарная книжка Бакыта Жумабаева)
 DELETE FROM spravki
 WHERE id = 8;
 
@@ -204,8 +204,12 @@ INSERT INTO patients (birth_date) VALUES ('2000-01-01');
 -- ERROR: update or delete on table "patients" violates foreign key constraint "spravki_patient_id_fkey"
 DELETE FROM patients WHERE id = 1;
 
--- Номера с пропусками: неудачная вставка с patient_id 999 забрала номер 8,
--- поэтому правильная вставка получит 9. Номера идут по порядку, могут иметь
--- пропуски, но никогда не повторяются
+-- Номера с пропусками. Справок в этом файле вставлено 13, поэтому заняты
+-- номера 1-13. Неудачная вставка с patient_id 999 выше забрала номер 14:
+-- номер из последовательности выдаётся до проверки внешнего ключа и обратно
+-- не возвращается. Значит эта, правильная, вставка получит 15, а не 14.
+-- Номера идут по порядку, могут иметь пропуски, но никогда не повторяются.
+-- Справки с id 8 здесь уже нет: её удалил запрос 10, и номер 8 больше
+-- никому не достанется
 INSERT INTO spravki (patient_id, spravka_type_id, price) VALUES (3, 2, 750);
 SELECT * FROM spravki WHERE patient_id = 3;
