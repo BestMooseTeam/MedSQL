@@ -1,0 +1,63 @@
+@MedicalApi_HostAddress = http://localhost:5207
+
+### Каталог видов справок
+GET {{MedicalApi_HostAddress}}/api/SpravkaTypes
+Accept: application/json
+
+### Все пациенты
+GET {{MedicalApi_HostAddress}}/api/Patients
+Accept: application/json
+
+### Поиск пациента по части имени, без учёта регистра
+GET {{MedicalApi_HostAddress}}/api/Patients?name=ай
+Accept: application/json
+
+### Создать пациента
+POST {{MedicalApi_HostAddress}}/api/Patients
+Content-Type: application/json
+
+{
+  "name": "Alice",
+  "birthDate": "2000-05-15",
+  "iin": "000515450111",
+  "phone": "+7 700 111 22 33",
+  "email": "alice@example.kz",
+  "districtNumber": 2,
+  "hasInsurance": true
+}
+
+### Справки пациента
+GET {{MedicalApi_HostAddress}}/api/Patients/1/spravki
+Accept: application/json
+
+### Выписать справку: название и цена берутся из каталога
+POST {{MedicalApi_HostAddress}}/api/Spravki
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "spravkaTypeId": 3
+}
+
+### Фильтры и сортировка справок
+GET {{MedicalApi_HostAddress}}/api/Spravki?patientId=1&minPrice=200&sort=price&descending=true
+Accept: application/json
+
+### Записаться на приём
+POST {{MedicalApi_HostAddress}}/api/Appointments
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "doctorName": "Ахметова Гульнара",
+  "specialty": "Терапевт",
+  "time": "2026-11-20T10:00",
+  "room": 105,
+  "complaint": "Кашель, температура"
+}
+
+### Статистика для главврача
+GET {{MedicalApi_HostAddress}}/api/stats
+Accept: application/json
+
+###
